@@ -1,1 +1,1 @@
-# MindMystery---A-Guess-Game
+# MindMystery - A Guess Game
