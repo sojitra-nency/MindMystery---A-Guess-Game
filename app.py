@@ -1,27 +1,37 @@
 import random
 import math
+from flask import Flask, render_template, request
 
-lower = int(input("Enter starting range: "))
-upper = int(input("Enter ending range: "))
+app = Flask(__name__)
 
-chances = int(math.log(upper - lower+1, 2))
-print(f" You got {chances} chances to guess it right!")
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-target = random.randint(lower, upper+1)
-user_input = int(input("Enter a number: "))
+@app.route('/game',methods=['POST'])
+def game():
+    lower = int(request.form['lower'])
+    upper = int(request.form['upper'])
+    target = random.randint(lower, upper)
 
-count = 0
-while(user_input!=target):
-    count += 1
+    return render_template('game.html', lower=lower, upper=upper, target=target)
+
+@app.route('/check', methods=['POST'])
+def check():
+    user_input = int(request.form['user_input'])
+    lower = int(request.form['lower'])
+    upper = int(request.form['upper'])
+    target = int(request.form['target'])
+
     if user_input > target:
-        print("Too High!!")
+        result = "Too High!!"
     elif user_input < target:
-        print("Too Low!!")
-    if count >= chances:
-        print(f"Correct Number was {target}.")
-        print("Better Luck Next Time!")
-        break
-    user_input = int(input("Enter a number: "))
+        result = "Too Low!!"
+    else:
+        result = "You guessed it right! Congrats!"
 
-else:
-    print("You guessed it right! Congrats!")
+
+    return render_template('game.html', lower=lower, upper=upper, target=target, result=result)
+
+if __name__ == '__main__':
+    app.run(debug=True)
