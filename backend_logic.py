@@ -4,7 +4,7 @@ import math
 lower = int(input("Enter starting range: "))
 upper = int(input("Enter ending range: "))
 
-chances = int(math.log(upper - lower+1, 2))
+chances = int(math.log(upper - lower, 2))
 print(f" You got {chances} chances to guess it right!")
 
 target = random.randint(lower, upper+1)
